@@ -257,7 +257,7 @@ describe('4 - [PÁGINA DA CARTEIRA] Desenvolva um formulário para adicionar uma
     ];
 
     await waitFor(() => {
-      expect(valueInput).toContainHTML(0);
+      expect(valueInput.value === 0 || valueInput.value === '0' || valueInput.value === '').toBe(true);
     });
     expect(store.getState().wallet.expenses).toStrictEqual(expectedStateExpense);
 
@@ -291,7 +291,7 @@ describe('4 - [PÁGINA DA CARTEIRA] Desenvolva um formulário para adicionar uma
     ];
 
     await waitFor(() => {
-      expect(valueInput).toContainHTML(0);
+      expect(valueInput.value === 0 || valueInput.value === '0' || valueInput.value === '').toBe(true);
     });
     expect(store.getState().wallet.expenses).toStrictEqual(expectedStateExpense2);
 
@@ -383,6 +383,30 @@ describe('6 - [PÁGINA DA CARTEIRA] Crie um botão para deletar uma despesa da t
 
     expect(store.getState().wallet.expenses).toStrictEqual(newExpenses);
   });
+
+  test('Ao clicar no botão para remover uma despesa, o valor correspondente deve ser subtraído e a despesa total deve ser atualizada no header', () => {
+    const { store } = renderWithRouterAndStore(<Wallet />, '/carteira', initial);
+    const deleteBtn = screen.getAllByTestId('delete-btn')[0];
+
+    fireEvent.click(deleteBtn);
+
+    const newExpenses = [
+      {
+        id: 1,
+        value: '20',
+        currency: 'EUR',
+        method: 'Dinheiro',
+        tag: 'Trabalho',
+        description: 'Vinte euros',
+        exchangeRates: mockData,
+      },
+    ];
+
+    expect(store.getState().wallet.expenses).toStrictEqual(newExpenses);
+
+    const totalField = screen.getByTestId('total-field');
+    expect(totalField).toContainHTML('131.37');
+});
 });
 
 describe('7 - [BÔNUS] Crie um botão para editar uma despesa da tabela contendo as seguintes características:', () => {
@@ -393,7 +417,7 @@ describe('7 - [BÔNUS] Crie um botão para editar uma despesa da tabela contendo
     expect(screen.getAllByTestId('edit-btn')[0]).toBeInTheDocument();
   });
 
-  test('Ao ser clicado, o botão habilita um formulário para editar a linha da tabela. Ao clicar em "Editar despesa" ela é atualizada, alterando o estado global.', async () => {
+  test('Ao ser clicado, o botão habilita um formulário para editar a linha da tabela. Ao clicar em "Editar despesa" ela é atualizada e atualiza a soma de despesas no header.', async () => {
     const { store } = renderWithRouterAndStore(<Wallet />, '/carteira', initial);
     const toggleEditBtn = screen.getAllByTestId('edit-btn')[0];
     fireEvent.click(toggleEditBtn);
