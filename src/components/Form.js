@@ -54,10 +54,9 @@ class Form extends Component {
 
   handleSubmit() {
     const { fetchCurrencies, currencies, addExpenses } = this.props;
-    const { expenses: { value, currency }, total } = this.state;	
-    const exchangeCurrency = parseFloat(value * currencies[currency].ask);	
+    const { expenses: { value, currency }, total } = this.state;
+    const exchangeCurrency = parseFloat(value * currencies[currency].ask);
     const sumOfExpenses = Math.round((total + exchangeCurrency) * 100) / 100;
-    
     fetchCurrencies();
     this.setState((prevState) => ({
       ...prevState,
