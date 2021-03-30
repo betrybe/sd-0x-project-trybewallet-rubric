@@ -40,3 +40,15 @@ export const getCurrenciesAction = () => (dispatch) => {
 export const INCLUDE_EXPENSE = 'INCLUDE_EXPENSE';
 
 export const includeExpenseAction = (expense) => ({ type: INCLUDE_EXPENSE, expense });
+
+export const DELETE_EXPENSE = 'DELETE_EXPENSE';
+
+export const deleteExpenseAction = (id) => ({ type: DELETE_EXPENSE, id });
+
+export const EDIT_EXPENSE_SWITCH = 'EDIT_EXPENSE_SWITCH';
+
+export const editingSwitchAction = (id) => ({ type: EDIT_EXPENSE_SWITCH, id });
+
+export const EDIT_EXPENSE = 'EDIT_EXPENSE';
+
+export const editAction = (expense, id) => ({ type: EDIT_EXPENSE, expense, id });
